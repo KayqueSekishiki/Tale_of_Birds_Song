@@ -1,0 +1,8 @@
+*.png !text !filter !merge !diff
+*.gif !text !filter !merge !diff
+*.jpg !text !filter !merge !diff
+*.jpeg !text !filter !merge !diff
+*.wav !text !filter !merge !diff
+*.ogg !text !filter !merge !diff
+*.ttf !text !filter !merge !diff
+*.pdf !text !filter !merge !diff
