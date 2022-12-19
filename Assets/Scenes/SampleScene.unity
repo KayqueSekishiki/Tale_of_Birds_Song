@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 287961275}
   - component: {fileID: 287961274}
   - component: {fileID: 287961273}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4113,6 +4113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 806720105}
   - component: {fileID: 806720106}
+  - component: {fileID: 806720107}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -4187,6 +4188,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &806720107
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806720104}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8e6d174adf1f2384c9950d0b7063415d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &909199025
 GameObject:
   m_ObjectHideFlags: 0
@@ -4393,7 +4414,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428243855}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.27, y: 1.781, z: 0}
+  m_LocalPosition: {x: 3.531, y: 1.806, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4450,7 +4471,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -4484,7 +4505,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98a75e708a3cca4dbd494d21046de9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 806720107}
   speed: 5
+  jumpForce: 8
 --- !u!1 &1999555884
 GameObject:
   m_ObjectHideFlags: 0
