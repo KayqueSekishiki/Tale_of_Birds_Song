@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
 
         if (movement > 0)
         {
-            if (!isJumping)
+            if (!isJumping && !isAttacking)
             {
                 anim.SetInteger("transaction", 1);
             }
@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
 
         if (movement < 0)
         {
-            if (!isJumping)
+            if (!isJumping && !isAttacking)
             {
                 anim.SetInteger("transaction", 1);
             }
