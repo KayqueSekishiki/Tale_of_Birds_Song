@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     private bool doubleJumping;
 
     private bool isAttacking;
+    private bool recovery;
 
 
     // Start is called before the first frame update
@@ -99,7 +100,7 @@ public class Player : MonoBehaviour
         {
             isAttacking = true;
             anim.SetInteger("transaction", 3);
-         
+
             Collider2D hit = Physics2D.OverlapCircle(point.position, radius, enemyLayer);
 
             if (hit != null)
@@ -117,16 +118,25 @@ public class Player : MonoBehaviour
         isAttacking = false;
     }
 
+
+    float recoveryCount;
     public void OnHit()
     {
-        anim.SetTrigger("hit");
-        health--;
+        recoveryCount += Time.deltaTime;
 
-        if (health <= 0)
+        if (recoveryCount >= 2f)
+        {
+            anim.SetTrigger("hit");
+            health--;
+            recoveryCount = 0;
+        }
+
+        if (health <= 0 && !recovery)
         {
             speed = 0;
+            recovery = true;
             anim.SetTrigger("death");
-          //  Destroy(gameObject, 1f);
+            //  Destroy(gameObject, 1f);
         }
     }
 
@@ -147,7 +157,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer ==9) {
+        if (collision.gameObject.layer == 9)
+        {
             OnHit();
         }
     }
