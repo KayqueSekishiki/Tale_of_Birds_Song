@@ -4444,7 +4444,7 @@ GameObject:
   - component: {fileID: 1424862914}
   - component: {fileID: 1424862916}
   - component: {fileID: 1424862917}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy_Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4585,6 +4585,7 @@ MonoBehaviour:
   speed: 1
   maxVision: 3
   stopDistance: 0.5
+  health: 5
 --- !u!95 &1424862917
 Animator:
   serializedVersion: 4

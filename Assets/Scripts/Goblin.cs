@@ -19,6 +19,7 @@ public class Goblin : MonoBehaviour
     public float speed;
     public float maxVision;
     public float stopDistance;
+    public int health;
 
 
     void Start()
@@ -96,9 +97,24 @@ public class Goblin : MonoBehaviour
             if (behindHit.transform.CompareTag("Player"))
             {
                 isRight = !isRight;
+                isFront = true;
             }
         }
 
+    }
+
+
+    public void OnHit()
+    {
+        anim.SetTrigger("hit");
+        health--;
+
+        if (health <= 0)
+        {
+            speed = 0;
+            anim.SetTrigger("death");
+            Destroy(gameObject, 1f);
+        }
     }
 
 
