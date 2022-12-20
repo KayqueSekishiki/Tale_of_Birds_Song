@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         {
             if (!isJumping && !isAttacking)
             {
-                anim.SetInteger("transaction", 1);
+                anim.SetInteger("transition", 1);
             }
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
@@ -62,14 +62,14 @@ public class Player : MonoBehaviour
         {
             if (!isJumping && !isAttacking)
             {
-                anim.SetInteger("transaction", 1);
+                anim.SetInteger("transition", 1);
             }
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
 
         if (movement == 0 && !isJumping && !isAttacking)
         {
-            anim.SetInteger("transaction", 0);
+            anim.SetInteger("transition", 0);
         }
     }
 
@@ -79,14 +79,14 @@ public class Player : MonoBehaviour
         {
             if (!isJumping)
             {
-                anim.SetInteger("transaction", 2);
+                anim.SetInteger("transition", 2);
                 rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 isJumping = true;
                 doubleJumping = true;
             }
             else if (doubleJumping)
             {
-                anim.SetInteger("transaction", 2);
+                anim.SetInteger("transition", 2);
                 rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 doubleJumping = false;
             }
@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             isAttacking = true;
-            anim.SetInteger("transaction", 3);
+            anim.SetInteger("transition", 3);
 
             Collider2D hit = Physics2D.OverlapCircle(point.position, radius, enemyLayer);
 
