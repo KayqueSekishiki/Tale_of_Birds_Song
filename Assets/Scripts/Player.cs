@@ -9,9 +9,12 @@ public class Player : MonoBehaviour
     public Animator anim;
     public Transform point;
 
+    public LayerMask enemyLayer;
+
     public float radius;
     public float speed;
     public float jumpForce;
+    public int health;
 
     private bool isJumping;
     private bool doubleJumping;
@@ -96,11 +99,12 @@ public class Player : MonoBehaviour
         {
             isAttacking = true;
             anim.SetInteger("transaction", 3);
-            Collider2D hit = Physics2D.OverlapCircle(point.position, radius);
+         
+            Collider2D hit = Physics2D.OverlapCircle(point.position, radius, enemyLayer);
 
             if (hit != null)
             {
-                Debug.Log(hit.name);
+                hit.GetComponent<Slime>().OnHit();
             }
 
             StartCoroutine(OnAttack());
@@ -113,6 +117,21 @@ public class Player : MonoBehaviour
         isAttacking = false;
     }
 
+    public void OnHit()
+    {
+        anim.SetTrigger("hit");
+        health--;
+
+        if (health <= 0)
+        {
+            speed = 0;
+            anim.SetTrigger("death");
+          //  Destroy(gameObject, 1f);
+        }
+    }
+
+
+
     void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(point.position, radius);
@@ -123,6 +142,13 @@ public class Player : MonoBehaviour
         if (collision.gameObject.layer == 8)
         {
             isJumping = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer ==9) {
+            OnHit();
         }
     }
 }
