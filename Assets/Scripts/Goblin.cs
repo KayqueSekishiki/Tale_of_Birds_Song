@@ -6,6 +6,7 @@ public class Goblin : MonoBehaviour
 {
 
     private Rigidbody2D rig;
+    private Animator anim;
     private bool isFront;
 
     private Vector2 raycastDirection;
@@ -13,15 +14,17 @@ public class Goblin : MonoBehaviour
     public bool isRight;
 
     public Transform point;
+    public Transform behindPoint;
 
     public float speed;
     public float maxVision;
     public float stopDistance;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         if (isRight)
         {
@@ -35,20 +38,32 @@ public class Goblin : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-
-    }
-
-
-
     private void FixedUpdate()
     {
         GetPlayer();
         OnMove();
     }
+
+    void OnMove()
+    {
+        if (isFront)
+        {
+            anim.SetInteger("transition", 1);
+            if (isRight)
+            {
+                transform.eulerAngles = new Vector2(0, 0);
+                raycastDirection = Vector2.right;
+                rig.velocity = new Vector2(speed, rig.velocity.y);
+            }
+            else
+            {
+                transform.eulerAngles = new Vector2(0, 180);
+                raycastDirection = Vector2.left;
+                rig.velocity = new Vector2(-speed, rig.velocity.y);
+            }
+        }
+    }
+
 
     void GetPlayer()
     {
@@ -67,35 +82,29 @@ public class Goblin : MonoBehaviour
                     isFront = false;
                     rig.velocity = Vector2.zero;
 
+
+                    anim.SetInteger("transition", 3);
                     hit.transform.GetComponent<Player>().OnHit();
                 }
             }
         }
 
-    }
+        RaycastHit2D behindHit = Physics2D.Raycast(behindPoint.position, raycastDirection, maxVision);
 
-
-    void OnMove()
-    {
-        if (isFront)
+        if (behindHit.collider != null)
         {
-            if (isRight)
+            if (behindHit.transform.CompareTag("Player"))
             {
-                transform.eulerAngles = new Vector2(0, 0);
-                raycastDirection = Vector2.right;
-                rig.velocity = new Vector2(speed, rig.velocity.y);
-            }
-            else
-            {
-                transform.eulerAngles = new Vector2(0, 180);
-                raycastDirection = Vector2.left;
-                rig.velocity = new Vector2(-speed, rig.velocity.y);
+                isRight = !isRight;
             }
         }
+
     }
+
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(point.position, raycastDirection * maxVision);
+        Gizmos.DrawRay(behindPoint.position, -raycastDirection * maxVision);
     }
 }
