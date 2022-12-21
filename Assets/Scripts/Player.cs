@@ -108,7 +108,7 @@ public class Player : MonoBehaviour
 
                 if (hit.GetComponent<Slime>())
                 {
-                hit.GetComponent<Slime>().OnHit();
+                    hit.GetComponent<Slime>().OnHit();
 
                 }
 
@@ -171,6 +171,13 @@ public class Player : MonoBehaviour
         if (collision.gameObject.layer == 9)
         {
             OnHit();
+        }
+
+        if (collision.CompareTag("Coin"))
+        {
+            collision.GetComponent<Animator>().SetTrigger("hit");
+            GameController.instance.GetCoin();
+            Destroy(collision.gameObject, 1f);
         }
     }
 }
