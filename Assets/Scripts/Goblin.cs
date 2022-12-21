@@ -7,10 +7,10 @@ public class Goblin : MonoBehaviour
 
     private Rigidbody2D rig;
     private Animator anim;
-    private bool isFront;
-
     private Vector2 raycastDirection;
 
+    private bool isDead;
+    public bool isFront;
     public bool isRight;
 
     public Transform point;
@@ -47,7 +47,7 @@ public class Goblin : MonoBehaviour
 
     void OnMove()
     {
-        if (isFront)
+        if (isFront && !isDead)
         {
             anim.SetInteger("transition", 1);
             if (isRight)
@@ -70,10 +70,11 @@ public class Goblin : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(point.position, raycastDirection, maxVision);
 
-        if (hit.collider != null)
+        if (hit.collider != null && !isDead)
         {
             if (hit.transform.CompareTag("Player"))
             {
+
                 isFront = true;
 
                 float distance = Vector2.Distance(transform.position, hit.transform.position);
@@ -90,7 +91,7 @@ public class Goblin : MonoBehaviour
             }
         }
 
-        RaycastHit2D behindHit = Physics2D.Raycast(behindPoint.position, raycastDirection, maxVision);
+        RaycastHit2D behindHit = Physics2D.Raycast(behindPoint.position, -raycastDirection, maxVision);
 
         if (behindHit.collider != null)
         {
