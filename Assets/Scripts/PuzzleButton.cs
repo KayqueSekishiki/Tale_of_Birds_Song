@@ -8,6 +8,7 @@ public class PuzzleButton : MonoBehaviour
     public Animator barrierAnim;
 
     public LayerMask layer;
+   
 
     private void Start()
     {
@@ -29,21 +30,21 @@ public class PuzzleButton : MonoBehaviour
     }
 
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Stone"))
-        {
-            OnPressed();
-        }
-    }
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Stone"))
+    //    {
+    //        OnPressed();
+    //    }
+    //}
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Stone"))
-        {
-            OnExit();
-        }
-    }
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Stone"))
+    //    {
+    //        OnExit();
+    //    }
+    //}
 
     void OnCollision()
     {
