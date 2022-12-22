@@ -334,7 +334,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -4141,6 +4141,7 @@ GameObject:
   - component: {fileID: 487477085}
   - component: {fileID: 487477087}
   - component: {fileID: 487477088}
+  - component: {fileID: 487477089}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -4240,7 +4241,7 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.9616735, y: -0.07466824}
+    - - {x: -2.1146867, y: -0.1052707}
       - {x: 0.7784205, y: -0.17514777}
       - {x: 0.77462643, y: 0.064797655}
       - {x: -0.0894083, y: 0.05372437}
@@ -4264,6 +4265,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &487477089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487477084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8571b391cf912b54d88468aad429709b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barrierAnim: {fileID: 1999555887}
+  layer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4881,7 +4898,7 @@ GameObject:
   - component: {fileID: 1428243858}
   m_Layer: 8
   m_Name: Stone
-  m_TagString: Untagged
+  m_TagString: Stone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5012,7 +5029,7 @@ GameObject:
   - component: {fileID: 1687379290}
   - component: {fileID: 1687379289}
   - component: {fileID: 1687379291}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
