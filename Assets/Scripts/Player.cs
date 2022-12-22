@@ -27,11 +27,13 @@ public class Player : MonoBehaviour
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        recoveryCount += Time.deltaTime;
         Jump();
         Attack();
     }
@@ -133,10 +135,9 @@ public class Player : MonoBehaviour
     float recoveryCount;
     public void OnHit()
     {
-        recoveryCount = 1F;
-        recoveryCount += Time.deltaTime;
-
-        if (recoveryCount >= 1f)
+      
+        
+        if (recoveryCount >= 2f)
         {
             anim.SetTrigger("hit");
             health--;
