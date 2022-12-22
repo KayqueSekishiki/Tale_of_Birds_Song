@@ -4565,6 +4565,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Goblin
       objectReference: {fileID: 0}
+    - target: {fileID: 3263294253765544892, guid: 52335229ad04e394bb487964b35e23dd, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 3263294253765544898, guid: 52335229ad04e394bb487964b35e23dd, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -6082,6 +6086,10 @@ PrefabInstance:
     - target: {fileID: 3263294253765544892, guid: 52335229ad04e394bb487964b35e23dd, type: 3}
       propertyPath: m_Name
       value: Enemy_Goblin (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263294253765544892, guid: 52335229ad04e394bb487964b35e23dd, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3263294253765544898, guid: 52335229ad04e394bb487964b35e23dd, type: 3}
       propertyPath: m_RootOrder

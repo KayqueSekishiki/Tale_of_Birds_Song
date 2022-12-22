@@ -133,14 +133,17 @@ public class Player : MonoBehaviour
     float recoveryCount;
     public void OnHit()
     {
+        recoveryCount = 1F;
         recoveryCount += Time.deltaTime;
 
-        if (recoveryCount >= 2f)
+        if (recoveryCount >= 1f)
         {
             anim.SetTrigger("hit");
             health--;
             recoveryCount = 0;
         }
+
+
 
         if (health <= 0 && !recovery)
         {
