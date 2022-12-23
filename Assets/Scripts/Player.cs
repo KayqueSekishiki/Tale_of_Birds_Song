@@ -22,8 +22,21 @@ public class Player : MonoBehaviour
     private bool isAttacking;
     private bool recovery;
 
+    private static Player instance;
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
 
-    // Start is called before the first frame update
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -135,8 +148,8 @@ public class Player : MonoBehaviour
     float recoveryCount;
     public void OnHit()
     {
-      
-        
+
+
         if (recoveryCount >= 2f)
         {
             anim.SetTrigger("hit");
@@ -182,6 +195,11 @@ public class Player : MonoBehaviour
             collision.GetComponent<Animator>().SetTrigger("hit");
             GameController.instance.GetCoin();
             Destroy(collision.gameObject, 1f);
+        }
+
+        if (collision.gameObject.layer == 11)
+        {
+            GameController.instance.NextLevel();
         }
     }
 }
