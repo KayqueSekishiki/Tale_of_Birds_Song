@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,12 +25,61 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (PlayerPrefs.GetInt("score") > 0)
+        {
+
+            score = PlayerPrefs.GetInt("score");
+
+            if (score.ToString().Length == 1)
+            {
+                scoreText.text = "x 000" + score.ToString();
+            }
+            else if (score.ToString().Length == 2)
+            {
+                scoreText.text = "x 00" + score.ToString();
+            }
+
+            else if (score.ToString().Length == 3)
+            {
+                scoreText.text = "x 0" + score.ToString();
+            }
+
+            else 
+            {
+                scoreText.text = "x " + score.ToString();
+            }
+        }
     }
 
     public void GetCoin()
     {
         score++;
-        scoreText.text = "x " + score.ToString();
+
+
+        if (score.ToString().Length == 1)
+        {
+            scoreText.text = "x 000" + score.ToString();
+        }
+
+
+        if (score.ToString().Length == 2)
+        {
+            scoreText.text = "x 00" + score.ToString();
+        }
+
+        if (score.ToString().Length == 3)
+        {
+            scoreText.text = "x 0" + score.ToString();
+        }
+
+        if (score.ToString().Length > 3)
+        {
+            scoreText.text = "x " + score.ToString();
+        }
+
+        PlayerPrefs.SetInt("score", score);
+
     }
 
     public void NextLevel()
