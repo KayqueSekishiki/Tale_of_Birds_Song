@@ -24,7 +24,7 @@ public class Slime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void FixedUpdate()
@@ -43,12 +43,13 @@ public class Slime : MonoBehaviour
 
             if (transform.eulerAngles.y == 0)
             {
-            transform.eulerAngles = new Vector3(0, 180, 0);
-            } else
+                transform.eulerAngles = new Vector3(0, 180, 0);
+            }
+            else
             {
                 transform.eulerAngles = new Vector3(0, 0, 0);
             }
-        }           
+        }
     }
 
     public void OnHit()
