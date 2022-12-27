@@ -15,11 +15,11 @@ public class Player : MonoBehaviour
     public float radius;
     public float speed;
     public float jumpForce;
-    public int health;
+
+    private Health healthSystem;
 
     private bool isJumping;
     private bool doubleJumping;
-
     private bool isAttacking;
     private bool recovery;
 
@@ -27,22 +27,26 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
-
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(this);
         }
-        else
+        else if (instance != this)
         {
-            Destroy(gameObject);
+            Destroy(instance.gameObject);
+            instance = this;
+            DontDestroyOnLoad(this);
+
         }
+
     }
 
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         playerAudio = GetComponent<PlayerAudio>();
+        healthSystem = GetComponent<Health>();
 
     }
 
@@ -159,18 +163,17 @@ public class Player : MonoBehaviour
         if (recoveryCount >= 2f)
         {
             anim.SetTrigger("hit");
-            health--;
+            healthSystem.health--;
             recoveryCount = 0;
         }
 
 
 
-        if (health <= 0 && !recovery)
+        if (healthSystem.health <= 0 && !recovery)
         {
-            speed = 0;
             recovery = true;
             anim.SetTrigger("death");
-            //  Destroy(gameObject, 1f);
+            GameController.instance.ShowGameOver();
         }
     }
 

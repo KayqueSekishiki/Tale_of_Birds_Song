@@ -9,22 +9,28 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
+    public GameObject gameOverPanel;
 
     public int score;
     public TMP_Text scoreText;
 
+
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        Time.timeScale = 1;
+        instance = this;
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //    DontDestroyOnLoad(this);
+        //}
+        //else if (instance != this)
+        //{
+        //    Destroy(instance.gameObject);
+        //    instance = this;
+        //    DontDestroyOnLoad(this);
 
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //}
 
         if (PlayerPrefs.GetInt("score") > 0)
         {
@@ -86,5 +92,16 @@ public class GameController : MonoBehaviour
     public void NextLevel()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void ShowGameOver()
+    {
+        Time.timeScale = 0;
+        gameOverPanel.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

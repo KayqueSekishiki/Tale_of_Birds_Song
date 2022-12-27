@@ -8,7 +8,7 @@ public class PuzzleButton : MonoBehaviour
     public Animator barrierAnim;
 
     public LayerMask layer;
-   
+
 
     private void Start()
     {

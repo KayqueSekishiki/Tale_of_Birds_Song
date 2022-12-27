@@ -17,7 +17,7 @@ public class PlayerPosition : MonoBehaviour
         stone = GameObject.FindGameObjectWithTag("Stone").transform;
 
         if (player != null)
-        {   
+        {
             CheckPoint();
         }
     }
