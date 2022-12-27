@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
 
     private Rigidbody2D rig;
+    private PlayerAudio playerAudio;
     public Animator anim;
     public Transform point;
 
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
     private bool recovery;
 
     private static Player instance;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
+        playerAudio = GetComponent<PlayerAudio>();
 
     }
 
@@ -98,12 +101,14 @@ public class Player : MonoBehaviour
                 rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 isJumping = true;
                 doubleJumping = true;
+                playerAudio.PlaySFX(playerAudio.jumpSound);
             }
             else if (doubleJumping)
             {
                 anim.SetInteger("transition", 2);
                 rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 doubleJumping = false;
+                playerAudio.PlaySFX(playerAudio.jumpSound);
             }
 
         }
@@ -117,6 +122,7 @@ public class Player : MonoBehaviour
             anim.SetInteger("transition", 3);
 
             Collider2D hit = Physics2D.OverlapCircle(point.position, radius, enemyLayer);
+            playerAudio.PlaySFX(playerAudio.hitSound);
 
             if (hit != null)
             {
@@ -197,6 +203,7 @@ public class Player : MonoBehaviour
 
         if (collision.CompareTag("Coin"))
         {
+            playerAudio.PlaySFX(playerAudio.coinSound);
             collision.GetComponent<Animator>().SetTrigger("hit");
             GameController.instance.GetCoin();
             Destroy(collision.gameObject, 1f);
