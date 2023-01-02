@@ -210,11 +210,6 @@ public class Player : MonoBehaviour
             collision.GetComponent<Animator>().SetTrigger("hit");
             GameController.instance.GetCoin();
             Destroy(collision.gameObject, 1f);
-        }
-
-        if (collision.gameObject.layer == 11)
-        {
-            GameController.instance.NextLevel();
-        }
+        }      
     }
 }

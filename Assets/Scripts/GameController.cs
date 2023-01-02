@@ -89,11 +89,6 @@ public class GameController : MonoBehaviour
 
     }
 
-    public void NextLevel()
-    {
-        SceneManager.LoadScene(1);
-    }
-
     public void ShowGameOver()
     {
         Time.timeScale = 0;
