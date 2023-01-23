@@ -5,8 +5,7 @@ using UnityEngine;
 public class PlayerPosition : MonoBehaviour
 {
     private Transform player;
-    private Transform stone;
-
+ 
     public static PlayerPosition instance;
 
     void Start()
@@ -14,8 +13,7 @@ public class PlayerPosition : MonoBehaviour
         instance = this;
 
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        stone = GameObject.FindGameObjectWithTag("Stone").transform;
-
+      
         if (player != null)
         {
             CheckPoint();
@@ -26,8 +24,6 @@ public class PlayerPosition : MonoBehaviour
     {
         Vector3 playerPos = transform.position;
         playerPos.z = 0f;
-
-        player.position = playerPos;
-        stone.position = new Vector3(-7.8f, 0.3f, 0);
+        player.position = playerPos;           
     }
 }

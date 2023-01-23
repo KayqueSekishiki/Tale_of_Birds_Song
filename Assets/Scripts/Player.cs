@@ -190,11 +190,6 @@ public class Player : MonoBehaviour
         {
             isJumping = false;
         }
-
-        if (collision.gameObject.layer == 12)
-        {
-            PlayerPosition.instance.CheckPoint();
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -210,6 +205,21 @@ public class Player : MonoBehaviour
             collision.GetComponent<Animator>().SetTrigger("hit");
             GameController.instance.GetCoin();
             Destroy(collision.gameObject, 1f);
-        }      
+        }
+
+        if (collision.CompareTag("Apple"))
+        {
+            Debug.Log("Peguei a maçã");
+            healthSystem.health++;
+            playerAudio.PlaySFX(playerAudio.coinSound);
+            collision.GetComponent<Animator>().SetTrigger("hit");
+            Destroy(collision.gameObject, 1f);
+        }
+
+        if (collision.gameObject.layer == 12)
+        {
+            PlayerPosition.instance.CheckPoint();
+            StonePosition.instance.CheckPoint();
+        }
     }
 }

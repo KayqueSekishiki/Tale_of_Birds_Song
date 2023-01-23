@@ -64,26 +64,26 @@ public class GameController : MonoBehaviour
         score++;
 
 
-        if (score.ToString().Length == 1)
-        {
-            scoreText.text = "x 000" + score.ToString();
-        }
+        //if (score.ToString().Length == 1)
+        //{
+        //    scoreText.text = "x 000" + score.ToString();
+        //}
 
 
-        if (score.ToString().Length == 2)
-        {
-            scoreText.text = "x 00" + score.ToString();
-        }
+        //if (score.ToString().Length == 2)
+        //{
+        //    scoreText.text = "x 00" + score.ToString();
+        //}
 
-        if (score.ToString().Length == 3)
-        {
-            scoreText.text = "x 0" + score.ToString();
-        }
+        //if (score.ToString().Length == 3)
+        //{
+        //    scoreText.text = "x 0" + score.ToString();
+        //}
 
-        if (score.ToString().Length > 3)
-        {
-            scoreText.text = "x " + score.ToString();
-        }
+        //if (score.ToString().Length > 3)
+        //{
+        //    scoreText.text = "x " + score.ToString();
+        //}
 
         PlayerPrefs.SetInt("score", score);
 
