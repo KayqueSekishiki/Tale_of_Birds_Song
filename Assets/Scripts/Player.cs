@@ -210,7 +210,14 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Apple"))
         {
             Debug.Log("Peguei a maçã");
-            healthSystem.health++;
+            if (healthSystem.health < 10)
+            {
+                healthSystem.health++;
+            }
+            if (healthSystem.heartsCount < 10)
+            {
+                healthSystem.heartsCount++;
+            }
             playerAudio.PlaySFX(playerAudio.coinSound);
             collision.GetComponent<Animator>().SetTrigger("hit");
             Destroy(collision.gameObject, 1f);
