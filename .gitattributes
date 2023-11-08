@@ -97,6 +97,8 @@
 *.meta linguist-generated
 *.prefab linguist-generated
 *.unity linguist-generated
+*.cginc linguist-vendored
+*.shader linguist-vendored
 *.png !text !filter !merge !diff
 *.gif !text !filter !merge !diff
 *.jpg !text !filter !merge !diff
