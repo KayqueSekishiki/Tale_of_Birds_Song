@@ -110,3 +110,6 @@
 *.meta linguist-generated
 *.prefab linguist-generated
 *.unity linguist-generated
+
+*.cginc linguist-vendored
+*.shader linguist-vendored
