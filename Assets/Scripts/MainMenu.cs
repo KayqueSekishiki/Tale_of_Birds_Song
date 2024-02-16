@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _mainMenu;
-    [SerializeField] private GameObject _optionsMenu;
 
     private Boolean _inMainMenu = true;
 
