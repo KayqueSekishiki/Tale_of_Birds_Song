@@ -29,7 +29,7 @@ public class Slime : MonoBehaviour
 
     void FixedUpdate()
     {
-        rig.velocity = new Vector2(speed, rig.velocity.y);
+        rig.linearVelocity = new Vector2(speed, rig.linearVelocity.y);
         OnCollision();
     }
 

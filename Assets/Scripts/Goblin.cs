@@ -54,13 +54,13 @@ public class Goblin : MonoBehaviour
             {
                 transform.eulerAngles = new Vector2(0, 0);
                 raycastDirection = Vector2.right;
-                rig.velocity = new Vector2(speed, rig.velocity.y);
+                rig.linearVelocity = new Vector2(speed, rig.linearVelocity.y);
             }
             else
             {
                 transform.eulerAngles = new Vector2(0, 180);
                 raycastDirection = Vector2.left;
-                rig.velocity = new Vector2(-speed, rig.velocity.y);
+                rig.linearVelocity = new Vector2(-speed, rig.linearVelocity.y);
             }
         }
     }
@@ -82,7 +82,7 @@ public class Goblin : MonoBehaviour
                 if (distance <= stopDistance)
                 {
                     isFront = false;
-                    rig.velocity = Vector2.zero;
+                    rig.linearVelocity = Vector2.zero;
 
 
                     anim.SetInteger("transition", 3);

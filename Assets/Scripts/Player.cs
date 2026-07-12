@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
     {
         float movement = Input.GetAxis("Horizontal");
 
-        rig.velocity = new Vector2(movement * speed, rig.velocity.y);
+        rig.linearVelocity = new Vector2(movement * speed, rig.linearVelocity.y);
 
         if (movement > 0)
         {
@@ -209,7 +209,7 @@ public class Player : MonoBehaviour
 
         if (collision.CompareTag("Apple"))
         {
-            Debug.Log("Peguei a maçã");
+            Debug.Log("Peguei a maï¿½ï¿½");
             if (healthSystem.health < 10)
             {
                 healthSystem.health++;
