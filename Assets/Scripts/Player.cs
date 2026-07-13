@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
-
-    private Rigidbody2D rig;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundRadius = 0.15f; private Rigidbody2D rig;
     private PlayerAudio playerAudio;
     public Animator anim;
     public Transform point;
@@ -16,6 +20,9 @@ public class Player : MonoBehaviour
     public float speed;
     public float jumpForce;
 
+    [SerializeField] private float attackCooldown = 0.5f;
+    private float attackTimer;
+
     private Health healthSystem;
 
     private bool isJumping;
@@ -23,22 +30,18 @@ public class Player : MonoBehaviour
     private bool isAttacking;
     private bool recovery;
 
-    private static Player instance;
+
+    public static Player Instance { get; private set; }
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance != null && Instance != this)
         {
-            instance = this;
-            DontDestroyOnLoad(this);
+            Destroy(gameObject);
+            return;
         }
-        else if (instance != this)
-        {
-            Destroy(instance.gameObject);
-            instance = this;
-            DontDestroyOnLoad(this);
 
-        }
+        Instance = this;
 
     }
 
@@ -47,15 +50,16 @@ public class Player : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         playerAudio = GetComponent<PlayerAudio>();
         healthSystem = GetComponent<Health>();
-
+        GameController.Instance.RegisterUI(gameOverPanel, scoreText);
     }
 
-    // Update is called once per frame
     void Update()
     {
         recoveryCount += Time.deltaTime;
+        attackTimer -= Time.deltaTime;
         Jump();
         Attack();
+        isJumping = !IsGrounded();
     }
 
     void FixedUpdate()
@@ -71,25 +75,16 @@ public class Player : MonoBehaviour
 
         rig.linearVelocity = new Vector2(movement * speed, rig.linearVelocity.y);
 
-        if (movement > 0)
+        if (movement != 0)
         {
             if (!isJumping && !isAttacking)
-            {
                 anim.SetInteger("transition", 1);
-            }
-            transform.eulerAngles = new Vector3(0, 0, 0);
-        }
 
-        if (movement < 0)
-        {
-            if (!isJumping && !isAttacking)
-            {
-                anim.SetInteger("transition", 1);
-            }
-            transform.eulerAngles = new Vector3(0, 180, 0);
+            transform.eulerAngles = movement > 0
+                ? Vector3.zero
+                : new Vector3(0, 180, 0);
         }
-
-        if (movement == 0 && !isJumping && !isAttacking)
+        else if (!isJumping && !isAttacking)
         {
             anim.SetInteger("transition", 0);
         }
@@ -97,51 +92,71 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
+        bool grounded = Physics2D.OverlapCircle(
+            groundCheck.position,
+            groundRadius,
+            groundLayer);
+
+        if (grounded)
+        {
+            isJumping = false;
+            doubleJumping = true;
+        }
+        else
+        {
+            isJumping = true;
+        }
+
         if (Input.GetButtonDown("Jump"))
         {
             if (!isJumping)
             {
                 anim.SetInteger("transition", 2);
+
+                rig.linearVelocity = new Vector2(rig.linearVelocity.x, 0);
                 rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
                 isJumping = true;
-                doubleJumping = true;
+
                 playerAudio.PlaySFX(playerAudio.jumpSound);
             }
             else if (doubleJumping)
             {
                 anim.SetInteger("transition", 2);
+
+                rig.linearVelocity = new Vector2(rig.linearVelocity.x, 0);
                 rig.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
                 doubleJumping = false;
+
                 playerAudio.PlaySFX(playerAudio.jumpSound);
             }
-
         }
     }
 
     void Attack()
     {
+        if (attackTimer > 0)
+            return;
+
         if (Input.GetButtonDown("Fire1"))
         {
+            attackTimer = attackCooldown;
+
             isAttacking = true;
             anim.SetInteger("transition", 3);
 
             Collider2D hit = Physics2D.OverlapCircle(point.position, radius, enemyLayer);
+
             playerAudio.PlaySFX(playerAudio.hitSound);
 
             if (hit != null)
             {
+                if (hit.TryGetComponent(out Slime slime))
+                    slime.OnHit();
 
-                if (hit.GetComponent<Slime>())
-                {
-                    hit.GetComponent<Slime>().OnHit();
-
-                }
-
-                if (hit.GetComponent<Goblin>())
-                {
-                    hit.GetComponent<Goblin>().OnHit();
-
-                }
+                if (hit.TryGetComponent(out Goblin goblin))
+                    goblin.OnHit();
             }
 
             StartCoroutine(OnAttack());
@@ -173,27 +188,29 @@ public class Player : MonoBehaviour
         {
             recovery = true;
             anim.SetTrigger("death");
-            GameController.instance.ShowGameOver();
+            PlayerPosition.Instance?.Respawn();
+            StonePosition.Instance?.Respawn();
+            GameController.Instance?.ShowGameOver();
         }
     }
 
 
 
-    void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
+        if (groundCheck == null) return;
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
+
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(point.position, radius);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 8 || collision.gameObject.layer == 10)
-        {
-            isJumping = false;
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log($"Trigger com: {collision.name} | Layer: {collision.gameObject.layer}");
+
         if (collision.gameObject.layer == 9)
         {
             OnHit();
@@ -203,30 +220,33 @@ public class Player : MonoBehaviour
         {
             playerAudio.PlaySFX(playerAudio.coinSound);
             collision.GetComponent<Animator>().SetTrigger("hit");
-            GameController.instance.GetCoin();
+            GameController.Instance?.GetCoin();
             Destroy(collision.gameObject, 1f);
         }
 
         if (collision.CompareTag("Apple"))
         {
             Debug.Log("Peguei a ma��");
-            if (healthSystem.health < 10)
-            {
-                healthSystem.health++;
-            }
-            if (healthSystem.heartsCount < 10)
-            {
-                healthSystem.heartsCount++;
-            }
+            healthSystem.health++;
+            healthSystem.heartsCount++;
             playerAudio.PlaySFX(playerAudio.coinSound);
-            collision.GetComponent<Animator>().SetTrigger("hit");
+            if (collision.TryGetComponent(out Animator animator))
+                animator.SetTrigger("hit");
             Destroy(collision.gameObject, 1f);
         }
 
         if (collision.gameObject.layer == 12)
         {
-            PlayerPosition.instance.CheckPoint();
-            StonePosition.instance.CheckPoint();
+            PlayerPosition.Instance?.Respawn();
+            StonePosition.Instance?.Respawn();
         }
+    }
+
+    private bool IsGrounded()
+    {
+        return Physics2D.OverlapCircle(
+            groundCheck.position,
+            0.15f,
+            groundLayer);
     }
 }

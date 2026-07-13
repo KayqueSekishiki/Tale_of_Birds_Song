@@ -1,29 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StonePosition : MonoBehaviour
 {
-    private Transform stone;
+    public static StonePosition Instance { get; private set; }
 
-    public static StonePosition instance;
+    [SerializeField] private Transform stone;
 
-    void Start()
+    private Vector3 checkpointPosition;
+
+    private void Awake() => Instance ??= this;
+
+    private void Start()
     {
-        instance = this;
-
-        stone = GameObject.FindGameObjectWithTag("Stone").transform;
+        stone = GameObject.FindGameObjectWithTag("Stone")?.transform;
 
         if (stone != null)
-        {
-            CheckPoint();
-        }
+            checkpointPosition = stone.position;
     }
 
-    public void CheckPoint()
+    public void SetCheckpoint(Vector3 position) => checkpointPosition = position;
+
+    public void Respawn()
     {
-        Vector3 stonePos = transform.position;
-        stonePos.z = 0f;
-        stone.position = stonePos;
+        if (stone == null)
+            stone = GameObject.FindGameObjectWithTag("Stone")?.transform;
+
+        if (stone != null)
+            stone.position = checkpointPosition;
     }
 }

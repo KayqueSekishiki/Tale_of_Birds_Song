@@ -1,127 +1,211 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class Goblin : MonoBehaviour
 {
+    [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private LayerMask _wallLayer;
+    private Rigidbody2D _rig;
+    private Animator _anim;
 
-    private Rigidbody2D rig;
-    private Animator anim;
-    private Vector2 raycastDirection;
+    private Vector2 _raycastDirection;
 
-    private bool isDead;
-    public bool isFront;
-    public bool isRight;
+    private bool _isDead;
+    private Player currentTarget;
 
-    public Transform point;
-    public Transform behindPoint;
+    [SerializeField] private bool _isRight = true;
+    [SerializeField] private bool _isFront;
 
-    public float speed;
-    public float maxVision;
-    public float stopDistance;
-    public int health;
+    [SerializeField] private Transform _point;
+    [SerializeField] private Transform _behindPoint;
 
+    [SerializeField] private float _speed = 1f;
+    [SerializeField] private float _maxVision = 4f;
+    [SerializeField] private float _stopDistance = 1f;
+    [SerializeField] private int _health = 3;
+    [SerializeField] private float attackCooldown = 1f;
+    private float attackTimer;
 
-    void Start()
+    private void Awake()
     {
-        rig = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        _rig = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
+    }
 
-        if (isRight)
-        {
-            transform.eulerAngles = new Vector2(0, 0);
-            raycastDirection = Vector2.right;
-        }
-        else
-        {
-            transform.eulerAngles = new Vector2(0, 180);
-            raycastDirection = Vector2.left;
-        }
+    private void Start()
+    {
+        UpdateDirection();
     }
 
     private void FixedUpdate()
     {
-        GetPlayer();
-        OnMove();
+        if (attackTimer > 0)
+            attackTimer -= Time.fixedDeltaTime;
+        DetectPlayer();
+        Move();
     }
 
-    void OnMove()
+    private void Move()
     {
-        if (isFront && !isDead)
+        if (_anim.GetInteger("transition") == 3)
+            return;
+
+        if (!_isFront || _isDead)
         {
-            anim.SetInteger("transition", 1);
-            if (isRight)
+            _rig.linearVelocity = new Vector2(0, _rig.linearVelocity.y);
+            return;
+        }
+
+        if (CheckWall())
+        {
+            _rig.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        _anim.SetInteger("transition", 1);
+
+        float direction = _isRight ? 1 : -1;
+
+        _rig.linearVelocity = new Vector2(
+            direction * _speed,
+            _rig.linearVelocity.y
+        );
+    }
+
+    private void DetectPlayer()
+    {
+        _isFront = false;
+
+        RaycastHit2D frontHit = Physics2D.Raycast(
+            _point.position,
+            _raycastDirection,
+            _maxVision,
+            _playerLayer
+        );
+
+        if (frontHit.collider != null &&
+            frontHit.collider.CompareTag("Player") &&
+            !_isDead)
+        {
+            _isFront = true;
+
+            float distance = Vector2.Distance(
+                transform.position,
+                frontHit.transform.position
+            );
+
+            if (distance <= _stopDistance)
             {
-                transform.eulerAngles = new Vector2(0, 0);
-                raycastDirection = Vector2.right;
-                rig.linearVelocity = new Vector2(speed, rig.linearVelocity.y);
+                Attack(frontHit.transform);
             }
             else
             {
-                transform.eulerAngles = new Vector2(0, 180);
-                raycastDirection = Vector2.left;
-                rig.linearVelocity = new Vector2(-speed, rig.linearVelocity.y);
+                _anim.SetInteger("transition", 1);
             }
+        }
+
+
+        RaycastHit2D behindHit = Physics2D.Raycast(
+            _behindPoint.position,
+            -_raycastDirection,
+            _maxVision,
+            _playerLayer
+        );
+
+        if (behindHit.collider != null &&
+            behindHit.collider.CompareTag("Player"))
+        {
+            _isRight = !_isRight;
+            UpdateDirection();
+            _isFront = true;
         }
     }
 
-
-    void GetPlayer()
+    private void Attack(Transform player)
     {
-        RaycastHit2D hit = Physics2D.Raycast(point.position, raycastDirection, maxVision);
+        Debug.Log($"Attack chamado | Timer: {attackTimer}");
 
-        if (hit.collider != null && !isDead)
-        {
-            if (hit.transform.CompareTag("Player"))
-            {
+        if (attackTimer > 0)
+            return;
 
-                isFront = true;
+        attackTimer = attackCooldown;
 
-                float distance = Vector2.Distance(transform.position, hit.transform.position);
+        currentTarget = player.GetComponent<Player>();
 
-                if (distance <= stopDistance)
-                {
-                    isFront = false;
-                    rig.linearVelocity = Vector2.zero;
+        _rig.linearVelocity = Vector2.zero;
 
-
-                    anim.SetInteger("transition", 3);
-                    hit.transform.GetComponent<Player>().OnHit();
-                }
-            }
-        }
-
-        RaycastHit2D behindHit = Physics2D.Raycast(behindPoint.position, -raycastDirection, maxVision);
-
-        if (behindHit.collider != null)
-        {
-            if (behindHit.transform.CompareTag("Player"))
-            {
-                isRight = !isRight;
-                isFront = true;
-            }
-        }
-
+        _anim.SetInteger("transition", 3);
     }
 
+    public void DealDamage()
+    {
+        Debug.Log("Dano chamado");
+
+        if (currentTarget != null)
+            currentTarget.OnHit();
+    }
+
+    public void EndAttack()
+    {
+        Debug.Log("Fim do ataque chamado");
+
+        _anim.SetInteger("transition", 0);
+    }
+
+    private void UpdateDirection()
+    {
+        transform.eulerAngles = _isRight
+            ? Vector3.zero
+            : new Vector3(0, 180, 0);
+
+        _raycastDirection = _isRight
+            ? Vector2.right
+            : Vector2.left;
+    }
 
     public void OnHit()
     {
-        anim.SetTrigger("hit");
-        health--;
+        _anim.SetTrigger("hit");
 
-        if (health <= 0)
-        {
-            speed = 0;
-            anim.SetTrigger("death");
-            Destroy(gameObject, 1f);
-        }
+        _health--;
+
+        if (_health <= 0)
+            Die();
     }
 
+    private void Die()
+    {
+        _isDead = true;
+
+        _speed = 0;
+
+        _rig.linearVelocity = Vector2.zero;
+
+        GetComponent<Collider2D>().enabled = false;
+
+        _anim.SetTrigger("death");
+
+        Destroy(gameObject, 1f);
+    }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(point.position, raycastDirection * maxVision);
-        Gizmos.DrawRay(behindPoint.position, -raycastDirection * maxVision);
+        if (_point != null)
+            Gizmos.DrawRay(_point.position, _raycastDirection * _maxVision);
+
+        if (_behindPoint != null)
+            Gizmos.DrawRay(_behindPoint.position, -_raycastDirection * _maxVision);
+    }
+
+    private bool CheckWall()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(
+            _point.position,
+            _raycastDirection,
+            0.5f,
+            _wallLayer
+        );
+
+        return hit.collider != null;
     }
 }

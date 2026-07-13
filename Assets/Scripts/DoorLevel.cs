@@ -1,19 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class DoorLevel : MonoBehaviour
 {
-    public int levelIndex;
+    [SerializeField] private int _levelIndex;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-      if (collision.CompareTag("Player"))
-        {
-            SceneManager.LoadScene(levelIndex);
-        }
+        if (collision.CompareTag("Player"))
+            LoadLevel();
     }
+
+    private void LoadLevel() =>
+        SceneManager.LoadScene(_levelIndex);
 }
-
-

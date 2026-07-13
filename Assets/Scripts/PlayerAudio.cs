@@ -1,24 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAudio : MonoBehaviour
 {
-    private AudioSource audioSource;
+    private AudioSource _audioSource;
 
-    public AudioClip coinSound;
-    public AudioClip jumpSound;
-    public AudioClip hitSound;
+    [SerializeField] private AudioClip _coinSound;
+    [SerializeField] private AudioClip _jumpSound;
+    [SerializeField] private AudioClip _hitSound;
 
-    // Start is called before the first frame update
-    void Start()
+    public AudioClip coinSound => _coinSound;
+    public AudioClip jumpSound => _jumpSound;
+    public AudioClip hitSound => _hitSound;
+
+    private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
     }
-
 
     public void PlaySFX(AudioClip sfx)
     {
-        audioSource.PlayOneShot(sfx);
-    }  
+        if (sfx != null)
+            _audioSource.PlayOneShot(sfx);
+    }
 }

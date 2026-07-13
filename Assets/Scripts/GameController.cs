@@ -1,102 +1,71 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public static GameController instance;
-    public GameObject gameOverPanel;
+    public static GameController Instance { get; private set; }
 
-    public int score;
-    public TMP_Text scoreText;
+    private GameObject gameOverPanel;
+    private TMP_Text scoreText;
 
+    private int score;
 
     private void Awake()
     {
         Time.timeScale = 1;
-        instance = this;
-        //if (instance == null)
-        //{
-        //    instance = this;
-        //    DontDestroyOnLoad(this);
-        //}
-        //else if (instance != this)
-        //{
-        //    Destroy(instance.gameObject);
-        //    instance = this;
-        //    DontDestroyOnLoad(this);
 
-        //}
-
-        if (PlayerPrefs.GetInt("score") > 0)
+        if (Instance != null && Instance != this)
         {
-
-            score += PlayerPrefs.GetInt("score");
-            scoreText.text = "x " + score.ToString();
-
-            //if (score.ToString().Length == 1)
-            //{
-            //    scoreText.text = "x 000" + score.ToString();
-            //}
-            //else if (score.ToString().Length == 2)
-            //{
-            //    scoreText.text = "x 00" + score.ToString();
-            //}
-
-            //else if (score.ToString().Length == 3)
-            //{
-            //    scoreText.text = "x 0" + score.ToString();
-            //}
-
-            //else 
-            //{
-            //    scoreText.text = "x " + score.ToString();
-            //}
+            Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        score = PlayerPrefs.GetInt("score", 0);
+    }
+
+    public void RegisterUI(GameObject panel, TMP_Text score)
+    {
+        gameOverPanel = panel;
+        scoreText = score;
+
+        gameOverPanel.SetActive(false);
+        UpdateScoreUI();
     }
 
     public void GetCoin()
     {
         score++;
 
-
-        //if (score.ToString().Length == 1)
-        //{
-        //    scoreText.text = "x 000" + score.ToString();
-        //}
-
-
-        //if (score.ToString().Length == 2)
-        //{
-        //    scoreText.text = "x 00" + score.ToString();
-        //}
-
-        //if (score.ToString().Length == 3)
-        //{
-        //    scoreText.text = "x 0" + score.ToString();
-        //}
-
-        //if (score.ToString().Length > 3)
-        //{
-        //    scoreText.text = "x " + score.ToString();
-        //}
+        UpdateScoreUI();
 
         PlayerPrefs.SetInt("score", score);
-
+        PlayerPrefs.Save();
     }
 
     public void ShowGameOver()
     {
         Time.timeScale = 0;
-        gameOverPanel.SetActive(true);
+
+        gameOverPanel?.SetActive(true);
     }
 
     public void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1;
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void UpdateScoreUI()
+    {
+        if (scoreText != null)
+            scoreText.text = $"x {score:0000}";
     }
 }

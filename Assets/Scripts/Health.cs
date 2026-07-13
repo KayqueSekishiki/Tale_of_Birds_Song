@@ -1,41 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    public int health;
-    public int heartsCount;
+    [SerializeField] private int _maxHealth = 10;
+    [SerializeField] private int _health = 3;
+    [SerializeField] private int _heartsCount = 3;
 
-    public Image[] hearts;
-    public Sprite fullHeart;
-    public Sprite emptyHeart;
+    [SerializeField] private Image[] _hearts;
+    [SerializeField] private Sprite _fullHeart;
+    [SerializeField] private Sprite _emptyHeart;
 
-
-    void Update()
+    public int health
     {
-        for (int i = 0; i < hearts.Length; i++)
+        get => _health;
+        set
         {
-            if (i < health)
-            {
-                hearts[i].sprite = fullHeart;
-            }
-            else
-            {
-                hearts[i].sprite = emptyHeart;
-            }
+            _health = Mathf.Clamp(value, 0, _maxHealth);
+            UpdateHearts();
+        }
+    }
 
+    public int heartsCount
+    {
+        get => _heartsCount;
+        set
+        {
+            _heartsCount = Mathf.Clamp(value, 0, _maxHealth);
+            UpdateHearts();
+        }
+    }
 
+    private void Start()
+    {
+        UpdateHearts();
+    }
 
-            if (i < heartsCount)
-            {
-                hearts[i].enabled = true;
-            }
-            else
-            {
-                hearts[i].enabled = false;
-            }
+    private void UpdateHearts()
+    {
+        for (int i = 0; i < _hearts.Length; i++)
+        {
+            _hearts[i].sprite = i < _health
+                ? _fullHeart
+                : _emptyHeart;
+
+            _hearts[i].enabled = i < _heartsCount;
         }
     }
 }

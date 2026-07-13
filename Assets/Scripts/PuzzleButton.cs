@@ -1,73 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PuzzleButton : MonoBehaviour
 {
-    private Animator anim;
-    public Animator barrierAnim;
+    private Animator _anim;
 
-    public LayerMask layer;
+    [SerializeField] private Animator _barrierAnim;
 
+    private bool _isPressed;
 
-    private void Start()
+    private void Awake()
     {
-        anim = GetComponent<Animator>();
+        _anim = GetComponent<Animator>();
     }
 
-    void OnPressed()
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        anim.SetBool("isPressed", true);
-        barrierAnim.SetBool("isPressed", true);
-
-    }
-
-    void OnExit()
-    {
-        anim.SetBool("isPressed", false);
-        barrierAnim.SetBool("isPressed", false);
-
-    }
-
-
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Stone"))
-    //    {
-    //        OnPressed();
-    //    }
-    //}
-
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Stone"))
-    //    {
-    //        OnExit();
-    //    }
-    //}
-
-    void OnCollision()
-    {
-        Collider2D hit = Physics2D.OverlapCircle(transform.position, 0.2f, layer);
-
-        if (hit != null)
+        if (collision.gameObject.CompareTag("Stone") && !_isPressed)
         {
-            OnPressed();
-            hit = null;
-        }
-        else
-        {
-            OnExit();
+            _isPressed = true;
+            SetButtonState(true);
         }
     }
 
-    private void FixedUpdate()
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        OnCollision();
+        if (collision.gameObject.CompareTag("Stone") && _isPressed)
+        {
+            _isPressed = false;
+            SetButtonState(false);
+        }
     }
 
-    void OnDrawGizmos()
+    private void SetButtonState(bool state)
     {
-        Gizmos.DrawWireSphere(transform.position, 0.2f);
+        _anim.SetBool("isPressed", state);
+        _barrierAnim.SetBool("isPressed", state);
     }
 }

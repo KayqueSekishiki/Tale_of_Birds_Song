@@ -1,29 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerPosition : MonoBehaviour
 {
-    private Transform player;
- 
-    public static PlayerPosition instance;
+    [SerializeField] private Transform player;
 
-    void Start()
+    public static PlayerPosition Instance { get; private set; }
+
+
+    private void Awake() => Instance ??= this;
+
+    private Vector3 _checkpoint;
+
+    private void Start()
     {
-        instance = this;
-
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-      
-        if (player != null)
-        {
-            CheckPoint();
-        }
+        _checkpoint = transform.position;
+        Player.Instance.transform.position = _checkpoint;
     }
 
-    public void CheckPoint()
+    public void Respawn()
     {
-        Vector3 playerPos = transform.position;
-        playerPos.z = 0f;
-        player.position = playerPos;           
+        Player.Instance.transform.position = _checkpoint;
     }
 }
