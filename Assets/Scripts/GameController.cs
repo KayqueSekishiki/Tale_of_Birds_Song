@@ -71,18 +71,15 @@ public class GameController : MonoBehaviour
         return PlayerPrefs.GetInt("level", 0);
     }
 
-
     public int LoadHealth()
     {
         return PlayerPrefs.GetInt("health", 3);
     }
 
-
     public int LoadHeartsCount()
     {
         return PlayerPrefs.GetInt("heartsCount", 3);
     }
-
 
     // Chamado quando o jogador morre
     public void ResetAttempt()
