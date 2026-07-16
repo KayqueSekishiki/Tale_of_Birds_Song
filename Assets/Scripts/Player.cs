@@ -173,23 +173,21 @@ public class Player : MonoBehaviour
     float recoveryCount;
     public void OnHit()
     {
+        if (recoveryCount < 2f)
+            return;
 
+        healthSystem.health--;
+        recoveryCount = 0;
 
-        if (recoveryCount >= 2f)
+        if (healthSystem.health > 0)
         {
             anim.SetTrigger("hit");
-            healthSystem.health--;
-            recoveryCount = 0;
+
+
         }
-
-
-
-        if (healthSystem.health <= 0 && !recovery)
+        else
         {
-            recovery = true;
             anim.SetTrigger("death");
-            playerPosition?.Respawn();
-            stonePosition?.Respawn();
             GameController.Instance?.ShowGameOver();
         }
     }
@@ -248,10 +246,19 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject, 1f);
         }
 
-        if (collision.gameObject.layer == 12)
+        if (collision.gameObject.layer == 12) //COLISOR NO FUNDO DO MAPA
         {
-            playerPosition?.Respawn();
-            stonePosition?.Respawn();
+            healthSystem.health--;
+
+            if (healthSystem.health > 0)
+            {
+                playerPosition?.Respawn();
+                stonePosition?.Respawn();
+            }
+            else
+            {
+                GameController.Instance?.ShowGameOver();
+            }
         }
     }
 

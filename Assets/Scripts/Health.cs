@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
     [SerializeField] private Sprite _fullHeart;
     [SerializeField] private Sprite _emptyHeart;
 
+
     public int health
     {
         get => _health;
@@ -20,6 +21,7 @@ public class Health : MonoBehaviour
             UpdateHearts();
         }
     }
+
 
     public int heartsCount
     {
@@ -31,10 +33,15 @@ public class Health : MonoBehaviour
         }
     }
 
+
     private void Start()
     {
+        health = GameController.Instance.LoadHealth();
+        heartsCount = GameController.Instance.LoadHeartsCount();
+
         UpdateHearts();
     }
+
 
     private void UpdateHearts()
     {
@@ -46,5 +53,24 @@ public class Health : MonoBehaviour
 
             _hearts[i].enabled = i < _heartsCount;
         }
+    }
+
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+    }
+
+
+    public void Heal(int amount)
+    {
+        health += amount;
+    }
+
+
+    public void IncreaseHeartCapacity(int amount)
+    {
+        heartsCount += amount;
+        health = heartsCount;
     }
 }
