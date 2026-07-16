@@ -216,7 +216,7 @@ MonoBehaviour:
   _point: {fileID: 3263294254814990879}
   _behindPoint: {fileID: 3263294255049083393}
   _speed: 1
-  _maxVision: 5
+  _maxVision: 4
   _stopDistance: 1
   _health: 2
   attackCooldown: 2

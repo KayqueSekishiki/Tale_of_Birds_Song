@@ -2,23 +2,23 @@ using UnityEngine;
 
 public class PlayerPosition : MonoBehaviour
 {
-    [SerializeField] private Transform player;
-
-    public static PlayerPosition Instance { get; private set; }
-
-
-    private void Awake() => Instance ??= this;
-
-    private Vector3 _checkpoint;
+    private Vector3 checkpoint;
 
     private void Start()
     {
-        _checkpoint = transform.position;
-        Player.Instance.transform.position = _checkpoint;
+        checkpoint = transform.position;
     }
 
     public void Respawn()
     {
-        Player.Instance.transform.position = _checkpoint;
+        Player player = FindObjectOfType<Player>();
+
+        if (player != null)
+        {
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+
+            rb.linearVelocity = Vector2.zero;
+            rb.position = checkpoint;
+        }
     }
 }

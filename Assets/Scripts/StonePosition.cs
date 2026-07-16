@@ -2,30 +2,24 @@ using UnityEngine;
 
 public class StonePosition : MonoBehaviour
 {
-    public static StonePosition Instance { get; private set; }
-
-    [SerializeField] private Transform stone;
-
+    private Transform stone;
     private Vector3 checkpointPosition;
-
-    private void Awake() => Instance ??= this;
 
     private void Start()
     {
-        stone = GameObject.FindGameObjectWithTag("Stone")?.transform;
-
-        if (stone != null)
-            checkpointPosition = stone.position;
+        stone = GameObject.FindGameObjectWithTag("Stone").transform;
+        checkpointPosition = stone.position;
     }
-
-    public void SetCheckpoint(Vector3 position) => checkpointPosition = position;
 
     public void Respawn()
     {
-        if (stone == null)
-            stone = GameObject.FindGameObjectWithTag("Stone")?.transform;
-
         if (stone != null)
-            stone.position = checkpointPosition;
+        {
+            Rigidbody2D rb = stone.GetComponent<Rigidbody2D>();
+
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.position = checkpointPosition;
+        }
     }
 }

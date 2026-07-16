@@ -30,19 +30,15 @@ public class Player : MonoBehaviour
     private bool isAttacking;
     private bool recovery;
 
+    private PlayerPosition playerPosition;
+    private StonePosition stonePosition;
+
 
     public static Player Instance { get; private set; }
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         Instance = this;
-
     }
 
     void Start()
@@ -50,6 +46,10 @@ public class Player : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         playerAudio = GetComponent<PlayerAudio>();
         healthSystem = GetComponent<Health>();
+
+        playerPosition = FindObjectOfType<PlayerPosition>();
+        stonePosition = FindObjectOfType<StonePosition>();
+
         GameController.Instance.RegisterUI(gameOverPanel, scoreText);
     }
 
@@ -188,8 +188,8 @@ public class Player : MonoBehaviour
         {
             recovery = true;
             anim.SetTrigger("death");
-            PlayerPosition.Instance?.Respawn();
-            StonePosition.Instance?.Respawn();
+            playerPosition?.Respawn();
+            stonePosition?.Respawn();
             GameController.Instance?.ShowGameOver();
         }
     }
@@ -250,8 +250,8 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.layer == 12)
         {
-            PlayerPosition.Instance?.Respawn();
-            StonePosition.Instance?.Respawn();
+            playerPosition?.Respawn();
+            stonePosition?.Respawn();
         }
     }
 
