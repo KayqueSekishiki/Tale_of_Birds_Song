@@ -20,10 +20,10 @@ public class Goblin : MonoBehaviour
     [SerializeField] private Transform _behindPoint;
 
     [SerializeField] private float _speed = 1f;
-    [SerializeField] private float _maxVision = 4f;
+    [SerializeField] private float _maxVision = 5f;
     [SerializeField] private float _stopDistance = 1f;
-    [SerializeField] private int _health = 3;
-    [SerializeField] private float attackCooldown = 1f;
+    [SerializeField] private int _health = 2;
+    [SerializeField] private float attackCooldown = 2f;
     private float attackTimer;
 
     private void Awake()

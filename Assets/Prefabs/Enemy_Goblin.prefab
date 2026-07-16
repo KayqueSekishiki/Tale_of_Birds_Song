@@ -204,7 +204,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b413637cf558f944bc49c8d557c4c37, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Goblin
   _playerLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -219,7 +219,7 @@ MonoBehaviour:
   _maxVision: 5
   _stopDistance: 1
   _health: 2
-  attackCooldown: 3
+  attackCooldown: 2
 --- !u!1 &3263294254814990872
 GameObject:
   m_ObjectHideFlags: 0

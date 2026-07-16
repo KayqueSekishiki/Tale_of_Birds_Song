@@ -218,6 +218,12 @@ public class Player : MonoBehaviour
 
         if (collision.CompareTag("Coin"))
         {
+            Collider2D col = collision.GetComponent<Collider2D>();
+
+            if (!col.enabled)
+                return;
+
+            col.enabled = false;
             playerAudio.PlaySFX(playerAudio.coinSound);
             collision.GetComponent<Animator>().SetTrigger("hit");
             GameController.Instance?.GetCoin();
@@ -226,12 +232,19 @@ public class Player : MonoBehaviour
 
         if (collision.CompareTag("Apple"))
         {
-            Debug.Log("Peguei a ma��");
+            Collider2D col = collision.GetComponent<Collider2D>();
+
+            if (!col.enabled)
+                return;
+
+            col.enabled = false;
+
             healthSystem.health++;
             healthSystem.heartsCount++;
+
             playerAudio.PlaySFX(playerAudio.coinSound);
-            if (collision.TryGetComponent(out Animator animator))
-                animator.SetTrigger("hit");
+            collision.GetComponent<Animator>().SetTrigger("hit");
+
             Destroy(collision.gameObject, 1f);
         }
 

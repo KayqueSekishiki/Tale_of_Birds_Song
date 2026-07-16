@@ -6,7 +6,7 @@ public class PuzzleButton : MonoBehaviour
 
     [SerializeField] private Animator _barrierAnim;
 
-    private bool _isPressed;
+    [SerializeField] private bool _isPressed;
 
     private void Awake()
     {
