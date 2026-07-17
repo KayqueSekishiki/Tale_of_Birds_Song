@@ -6532,7 +6532,7 @@ GameObject:
   - component: {fileID: 1428243856}
   - component: {fileID: 1428243859}
   - component: {fileID: 1428243858}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Stone
   m_TagString: Stone
   m_Icon: {fileID: 0}
@@ -7827,7 +7827,7 @@ GameObject:
   - component: {fileID: 1999555885}
   - component: {fileID: 1999555888}
   - component: {fileID: 1999555887}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Barrier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
