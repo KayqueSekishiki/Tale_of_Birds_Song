@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Barrier_Level2
+  m_Controller: {fileID: 9100000, guid: ae22ac6decf955d42995e88857087d6c, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: c4acb1f2ad3e70048bf2a79063c09572, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5473b0d2192990742a4d81b06e803d98, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 317ee777cdd1f374e8580a8b46219b9c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 317ee777cdd1f374e8580a8b46219b9c, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 70e9a5f3a64008242ac1c6ea0cd38f4d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e73aca85446d2a348bbd1a6b37788ebd, type: 2}
