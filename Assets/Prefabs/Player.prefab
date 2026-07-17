@@ -1408,7 +1408,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  groundRadius: 0.25
+  groundRadius: 0.15
   anim: {fileID: 6820258390394191594}
   point: {fileID: 8196803142451146811}
   enemyLayer:
@@ -1416,8 +1416,8 @@ MonoBehaviour:
     m_Bits: 512
   radius: 0.1
   speed: 3
-  jumpForce: 8
-  attackCooldown: 0.5
+  jumpForce: 7.5
+  attackCooldown: 1
 --- !u!82 &211610372075641495
 AudioSource:
   m_ObjectHideFlags: 0

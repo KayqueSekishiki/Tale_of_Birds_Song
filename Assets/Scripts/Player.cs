@@ -241,7 +241,7 @@ public class Player : MonoBehaviour
             healthSystem.heartsCount++;
 
             playerAudio.PlaySFX(playerAudio.coinSound);
-            collision.GetComponent<Animator>().SetTrigger("hit");
+            collision.GetComponentInChildren<Animator>().SetTrigger("hit");
 
             Destroy(collision.gameObject, 1f);
         }
