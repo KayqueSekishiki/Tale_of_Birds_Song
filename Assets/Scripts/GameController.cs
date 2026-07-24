@@ -109,7 +109,8 @@ public class GameController : MonoBehaviour
         // Recupera a vida inicial baseada nos corações conquistados
         int hearts = LoadHeartsCount();
 
-        PlayerPrefs.SetInt("health", hearts);
+        PlayerPrefs.SetInt("health", 3);
+
         PlayerPrefs.Save();
 
 
