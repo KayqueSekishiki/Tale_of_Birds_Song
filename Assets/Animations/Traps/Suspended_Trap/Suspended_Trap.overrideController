@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Suspended_Trap
+  m_Controller: {fileID: 9100000, guid: 11b7751e0c4be3e49993bd3ee9501440, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: bbb764c088a1ec040a46124ddaeb35b3, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d483b3962cece604fa5494d28ad89fa2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 65cd91a0f3c3d8a43b32e6adb43cb1eb, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6d6e2aa1c0d2ec245a457fa0e292f585, type: 2}
